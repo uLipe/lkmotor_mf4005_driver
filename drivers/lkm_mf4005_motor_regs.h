@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2024 Felipe Neves
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#ifndef DRIVERS_LKM_MF4005_REGS_H_
+#define DRIVERS_LKM_MF4005_REGS_H_
+
+#define MF4005_TURN_OFF_REG      0x80
+#define MF4005_TURN_ON_REG       0x88
+#define MF4005_STOP_REG          0x88
+#define MF4005_TORQUE_SET_REG    0xA1
+#define MF4005_SPEED_SET_REG     0xA2
+#define MF4005_POSITION_SET_REG  0xA3
+#define MF4005_POSITION_INC_REG  0xA3
+#define MF4005_PID_GET_REG       0x30
+#define MF4005_PID_SET_REG       0x31
+#define MF4005_POSITION_GET_REG  0x92
+#define MF4005_STATE_GET_REG     0x9C
+
+#define MF4005_CURRENT_HARD_LIMIT_MILIAMPERES 16500
+#define MF4005_CURRENT_SCALE_MULT   2048
+#define MF4005_ANGLE_SCALE_MULT     10
+#define MF4005_SPEED_SCALE_MULT     100
+
+enum mf4005_pid_param_index {
+    MF4005_POS_PID_KP_INDEX = 2,
+    MF4005_POS_PID_KI_INDEX = 3,
+    MF4005_SPD_PID_KP_INDEX = 4,
+    MF4005_SPD_PID_KI_INDEX = 5,
+    MF4005_TOR_PID_KP_INDEX = 6,
+    MF4005_TOR_PID_KI_INDEX = 7,
+};
+
+enum mf4005_angle_inc_index {
+    MF4005_ANGLE_INC_0_INDEX = 4,
+    MF4005_ANGLE_INC_1_INDEX = 5,
+    MF4005_ANGLE_INC_2_INDEX = 6,
+    MF4005_ANGLE_INC_3_INDEX = 7,
+};
+
+enum mf4005_speed_ctl_index {
+    MF4005_SPPED_CTL_0_INDEX = 4,
+    MF4005_SPPED_CTL_1_INDEX = 5,
+    MF4005_SPPED_CTL_2_INDEX = 6,
+    MF4005_SPPED_CTL_3_INDEX = 7,
+};
+
+enum mf4005_torque_ctl_index {
+    MF4005_TORQUE_CTL_0_INDEX = 4,
+    MF4005_TORQUE_CTL_1_INDEX = 5,
+};
+
+enum mf4005_angle_read_index {
+    MF4005_ANGLE_READ_0_INDEX = 1,
+    MF4005_ANGLE_READ_1_INDEX = 2,
+    MF4005_ANGLE_READ_2_INDEX = 3,
+    MF4005_ANGLE_READ_3_INDEX = 4,
+    MF4005_ANGLE_READ_4_INDEX = 5,
+    MF4005_ANGLE_READ_5_INDEX = 6,
+    MF4005_ANGLE_READ_6_INDEX = 7,
+};
+
+enum mf4005_torque_read_index {
+    MF4005_TORQUE_READ_0_INDEX = 2,
+    MF4005_TORQUE_READ_1_INDEX = 3,
+};
+
+enum mf4005_speed_read_index {
+    MF4005_SPEED_READ_0_INDEX = 4,
+    MF4005_SPEED_READ_1_INDEX = 5,
+};
+
+#endif /* DRIVERS_LKM_MF4005_REGS_H_*/

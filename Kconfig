@@ -1,0 +1,20 @@
+# Copyright (c) 2024 Felipe Neves
+# SPDX-License-Identifier: Apache-2.0
+
+config LKMOTOR_MF4005_DRIVER
+    bool "Enable MF4005 brushless motor driver"
+    help
+      Enables Zephyr out of tree MF4005 brushless motor driver
+
+if LKMOTOR_MF4005_DRIVER
+
+config MF4005_ENABLE_AT_BOOT
+    bool "Enable the brushless motor at startup"
+    help
+      Enable the brushless motor at startup
+
+config MF4005_DRIVER_SHELL
+    bool "Enable MF4005 motor shell commands"
+    select SHELL
+
+endif #LKMOTOR_MF4005_DRIVER

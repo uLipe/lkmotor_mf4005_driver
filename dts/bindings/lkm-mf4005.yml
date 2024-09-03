@@ -1,0 +1,43 @@
+# Copyright (c) 2024 Felipe Neves
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  MF4005 Motor Brushless over CAN driver. Example usage:
+
+    &fdcan1 {
+      bus-speed = <1000000>;
+      status = "okay";
+      
+      # address-cells = <1>;
+      # size-cells = <0>;	
+      mf4005_motor: mf4005_motor@140 {
+        compatible = "lkm,mf4005";
+        reg = <0x140>;
+        max-current-ma = <240>;
+        encoder-resolution-bits = <16>;
+        max-speed-dps = <12000>;
+      };
+    };
+
+compatible: "lkm,mf4005"
+
+properties:
+  max-current-ma: 
+    required: true
+    type: int
+    description: |
+      Max current supported to the motor in milliamperes
+  
+  encoder-resolution-bits: 
+    required: true
+    type: int
+    description: |
+      Resolution of the motor encoder sensor
+    
+  max-speed-dps: 
+    required: true
+    type: int
+    description: |
+      Maximum rotation speed in degrees per second
+
+include: [base.yaml, can-controller.yaml]
