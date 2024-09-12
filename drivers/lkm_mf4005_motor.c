@@ -379,10 +379,31 @@ static int mf4005_init(const struct device *dev)
 		return ret;
 	}
 
+	/* Check motor connection before proceed */
+		struct can_frame tx_frame = {
+		.flags = 0,
+		.id = cfg->id,
+		.dlc = 8,
+		.data[0] = MF4005_PID_GET_REG,
+	};
+	ret = can_send(cfg->can_bus, &tx_frame, K_FOREVER, NULL, NULL);
+	if(ret < 0) {
+		LOG_ERR("Failed to access the MF4005 motor: (0x%x)", cfg->id);
+		return ret;
+	}
+
+	ret = k_sem_take(&dev_data->can_signal, K_MSEC(500));
+	if(ret < 0) {
+		LOG_ERR("Motor: (0x%x) seems to be disconnected", cfg->id);
+		return ret;
+	}
+
+	LOG_INF("Motor: (0x%x) connection checked, and its ready to use!", cfg->id);
+
 #ifdef CONFIG_MF4005_ENABLE_AT_BOOT
 	return mf4005_motor_start(dev);
 #else
-	return 0;
+	return  mf4005_motor_stop(dev);
 #endif
 
 }
