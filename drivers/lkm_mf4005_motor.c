@@ -323,13 +323,19 @@ static int mf_motor_channel_get(const struct device *dev, enum mf4005_motor_chan
 			raw = dev_data->rx_frame.data[MF4005_SPEED_READ_1_INDEX];
 			raw <<= 8;
 			raw |= dev_data->rx_frame.data[MF4005_SPEED_READ_0_INDEX];
-			*val = (int64_t)(raw) /MF4005_SPEED_SCALE_MULT;
+			if(raw > 0x8000) {
+				raw |= 0xFFFFFFFFFFFF8000;
+			}
+			*val = (int64_t)(raw);
 		break;
 
 		case MF4005_CHAN_RAW_TORQUE_MILIAMPERES:			
 			raw = dev_data->rx_frame.data[MF4005_TORQUE_READ_1_INDEX];
 			raw <<= 8;
 			raw |= dev_data->rx_frame.data[MF4005_TORQUE_READ_0_INDEX];
+			if(raw > 0x8000) {
+				raw |= 0xFFFFFFFFFFFF8000;
+			}
 			*val = ((int64_t)(raw) * MF4005_CURRENT_HARD_LIMIT_MILIAMPERES) /
 				   MF4005_CURRENT_SCALE_MULT;
 		break;
