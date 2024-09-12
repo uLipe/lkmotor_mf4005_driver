@@ -15,7 +15,8 @@ robotics low-level controllers.
 You can find more about this motor here: http://en.lkmotor.cn/Product.aspx?TypeID=17
 
 Adding The Driver to your project via ``west``
-****************************************
+**********************************************
+
 The recommended way is to use ``west`` to initialize this repository directly and
 all its dependencies:
 
@@ -46,3 +47,10 @@ to ``zephyr/west.yml``:
 
 3. Save the file, and run ``west update`` from the project root to retrieve the
 latest version of the library from Github, or whatever ``revision`` was
+
+Playing with your motor:
+************************
+
+After setting up zephyr, you can enable the options, `CONFIG_LKMOTOR_MF4005_DRIVER`, and,
+`CONFIG_MF4005_DRIVER_SHELL` to enable the driver and the shell of the motor driver, you
+can also refer `samples/mf4005_shell` to have something to get started.
