@@ -67,6 +67,94 @@ static int parse_named_int(const char *name, const char *heystack[], size_t coun
 }
 
 
+static void channel_name_get(size_t idx, struct shell_static_entry *entry);
+SHELL_DYNAMIC_CMD_CREATE(dsub_channel_name, channel_name_get);
+
+static void attribute_name_get(size_t idx, struct shell_static_entry *entry);
+SHELL_DYNAMIC_CMD_CREATE(dsub_attribute_name, attribute_name_get);
+
+static void channel_name_get(size_t idx, struct shell_static_entry *entry)
+{
+	int cnt = 0;
+
+	entry->syntax = NULL;
+	entry->handler = NULL;
+	entry->help = NULL;
+	entry->subcmd = NULL;
+
+	for (int i = 0; i < ARRAY_SIZE(motor_channel_name); i++) {
+		if (motor_channel_name[i] != NULL) {
+			if (cnt == idx) {
+				entry->syntax = motor_channel_name[i];
+				break;
+			}
+			cnt++;
+		}
+	}
+}
+
+static void attribute_name_get(size_t idx, struct shell_static_entry *entry)
+{
+	int cnt = 0;
+
+	entry->syntax = NULL;
+	entry->handler = NULL;
+	entry->help = NULL;
+	entry->subcmd = NULL;
+
+	for (int i = 0; i < ARRAY_SIZE(motor_attribute_name); i++) {
+		if (motor_attribute_name[i] != NULL) {
+			if (cnt == idx) {
+				entry->syntax = motor_attribute_name[i];
+				break;
+			}
+			cnt++;
+		}
+	}
+}
+
+static void device_name_get(size_t idx, struct shell_static_entry *entry);
+
+SHELL_DYNAMIC_CMD_CREATE(dsub_device_name, device_name_get);
+
+static void device_name_get(size_t idx, struct shell_static_entry *entry)
+{
+	const struct device *dev = shell_device_lookup(idx, NULL);
+
+	entry->syntax = (dev != NULL) ? dev->name : NULL;
+	entry->handler = NULL;
+	entry->help = NULL;
+	entry->subcmd = NULL;
+}
+
+
+static void device_name_get_for_chan(size_t idx, struct shell_static_entry *entry);
+
+SHELL_DYNAMIC_CMD_CREATE(dsub_device_name_for_chan, device_name_get_for_chan);
+
+static void device_name_get_for_chan(size_t idx, struct shell_static_entry *entry)
+{
+	const struct device *dev = shell_device_lookup(idx, NULL);
+
+	entry->syntax = (dev != NULL) ? dev->name : NULL;
+	entry->handler = NULL;
+	entry->help = NULL;
+	entry->subcmd = &dsub_channel_name;
+}
+
+static void device_name_get_for_attr(size_t idx, struct shell_static_entry *entry)
+{
+	const struct device *dev = shell_device_lookup(idx, NULL);
+
+	entry->syntax = (dev != NULL) ? dev->name : NULL;
+	entry->handler = NULL;
+	entry->help = NULL;
+	entry->subcmd = &dsub_attribute_name;
+}
+
+SHELL_DYNAMIC_CMD_CREATE(dsub_device_name_for_attr, device_name_get_for_attr);
+
+
 static int cmd_motor_start(const struct shell *shell, size_t argc, char **argv)
 {
 	const struct device *dev;
@@ -237,14 +325,16 @@ static int cmd_motor_channel_get(const struct shell *shell, size_t argc, char **
 	return ret;
 }
 
+/* clang-format off */
 SHELL_STATIC_SUBCMD_SET_CREATE(
 	lkm_mf4005,
-	SHELL_CMD(motor_start, NULL, MOTOR_START_HELP, cmd_motor_start),
-	SHELL_CMD(motor_stop, NULL, MOTOR_STOP_HELP, cmd_motor_stop),
-	SHELL_CMD(motor_attr_set, NULL, MOTOR_SET_ATTR_HELP, cmd_motor_attr_set),
-	SHELL_CMD(motor_channel_set, NULL, MOTOR_SET_CHANNEL_HELP, cmd_motor_channel_set),
-	SHELL_CMD(motor_channel_get, NULL, MOTOR_GET_CHANNEL_HELP, cmd_motor_channel_get),
+	SHELL_CMD_ARG(motor_start, &dsub_device_name, MOTOR_START_HELP, cmd_motor_start, 2, 0),
+	SHELL_CMD_ARG(motor_stop, &dsub_device_name, MOTOR_STOP_HELP, cmd_motor_stop, 2, 0),
+	SHELL_CMD_ARG(motor_attr_set, &dsub_device_name_for_attr, MOTOR_SET_ATTR_HELP, cmd_motor_attr_set, 4, 0),
+	SHELL_CMD_ARG(motor_channel_set, &dsub_device_name_for_chan, MOTOR_SET_CHANNEL_HELP, cmd_motor_channel_set, 4, 0),
+	SHELL_CMD_ARG(motor_channel_get, &dsub_device_name_for_chan, MOTOR_GET_CHANNEL_HELP, cmd_motor_channel_get, 3, 0),
 	SHELL_SUBCMD_SET_END
 	);
+/* clang-format on */
 
 SHELL_CMD_REGISTER(lkm_mf4005, &lkm_mf4005, "LK MF4005 Brushless motor commands", NULL);
