@@ -21,7 +21,7 @@ jobs:
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: lkmotor_mf4005_driver/samples/mf4005_shell
+          app-path: lkmotor_mf4005_driver
           toolchains: arm-zephyr-eabi
 
       # - name: Build

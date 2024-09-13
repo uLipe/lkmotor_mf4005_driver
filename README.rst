@@ -22,7 +22,7 @@ all its dependencies:
 
 .. code-block:: console
 
-   $ west init -m git@github.com:uLipe/lkmotor_mf4005_driver.git 
+   $ west init -m https://github.com/uLipe/lkmotor_mf4005_driver 
    $ west update
 
 Alternatively you can add a local copy of this module by adding the following sections
