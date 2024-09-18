@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) 2024 Vinicius Miguel
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+
+&twai {
+	bus-speed = <1000000>;
+	status = "okay";
+
+	#address-cells = <1>;
+	#size-cells = <0>;	
+	mf4005_motor0: mf4005_motor@141 {
+		compatible = "lkm,mf4005";
+		reg = <0x141>;
+		max-current-ma = <240>;
+		encoder-resolution-bits = <16>;
+		max-speed-dps = <12000>;
+		status = "okay";
+	};
+
+	mf4005_motor1: mf4005_motor@142 {
+		compatible = "lkm,mf4005";
+		reg = <0x142>;
+		max-current-ma = <240>;
+		encoder-resolution-bits = <16>;
+		max-speed-dps = <12000>;
+		status = "okay";
+	};
+};
